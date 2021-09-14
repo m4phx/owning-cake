@@ -17,9 +17,14 @@ class BlogsController extends AppController
          
         $this->loadModel('Articles');
         
-        $articles = $this->Articles->find('all')->order(['Articles.id' => 'DESC']);
+        $articles = $this->Articles->find()
+                                    ->order(['Articles.id' => 'DESC']);
 
-        $this->set('articles', $articles);
+        $articleList = $this->Articles->find('list'); //['keyField' => 'title'] to build link with title instead of id
+
+        $this->set('articles', $this->paginate($articles, ['limit' => '2'])); //change to 10 after
+
+        $this->set('articleList', $articleList);
 
     }
     
@@ -32,6 +37,18 @@ class BlogsController extends AppController
     public function contact() {
 
         //contact
+
+    }
+
+    public function view($id = null) {
+
+        $this->loadModel('Articles');
+
+        $article = $this->Articles->get($id);
+
+        $this->set('article', $article);
+
+
 
     }
 
